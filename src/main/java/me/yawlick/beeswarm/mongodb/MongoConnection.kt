@@ -6,7 +6,7 @@ import org.bson.Document
 
 class MongoConnection {
     fun connect() {
-        val uri = "mongodb+srv://yawlick:RUf-4yv-jiG-CVK@yawdatabase.h8e1agi.mongodb.net/?retryWrites=true&w=majority&appName=YawDatabase"
+        val uri = "mongodb+srv://yawlick:<хуй тебе а не пароль>@yawdatabase.h8e1agi.mongodb.net/?retryWrites=true&w=majority&appName=YawDatabase"
         try {
             MongoClients.create(uri).use { mongoClient ->
                 val database = mongoClient.getDatabase("BeeSwarmSimulator")
