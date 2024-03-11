@@ -1,0 +1,4 @@
+name: BeeSwarm
+version: '${project.version}'
+main: me.yawlick.beeswarm.BeeSwarm
+api-version: '1.16'
