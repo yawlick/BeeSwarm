@@ -2,29 +2,26 @@ package me.yawlick.beeswarm.player
 
 import me.yawlick.beeswarm.BeeSwarm
 import me.yawlick.beeswarm.player.statistic.Stats
+import me.yawlick.beeswarm.player.tool.Tool
 import me.yawlick.beeswarm.utils.StumpsHelper
-import net.kyori.adventure.bossbar.BossBar
-import net.kyori.adventure.text.Component
 import org.bukkit.ChatColor
 import org.bukkit.Sound
+import org.bukkit.boss.BossBar
 import org.bukkit.entity.Player
 
 class BSSPlayer(val player: Player) {
-    val data: PlayerData = PlayerData()
-    var BSS: BeeSwarm? = BeeSwarm.INSTANCE
-
-    fun setData(): PlayerData {
-        return data
-    }
+    var BSS: BeeSwarm? = BeeSwarm().INSTANCE
+    var data: PlayerData = BSS!!.playerData.get(player.uniqueId)!!
 
     fun updateClient() {
         var bar = pollenBossbar
-        bar!!.name(Component.text("§lПыльца в контейнере: §r" + ChatColor.GOLD + data.pollen + ChatColor.DARK_GRAY + "§l/§r"
-                + ChatColor.GRAY + data.capacity))
-        bar.progress(data.pollen.toFloat() / data.capacity)
+        bar!!.setTitle("§lПыльца в контейнере: §r§6${data.pollen}§8§l/§r§7${data.capacity}")
+        bar!!.progress = (data.pollen.toFloat() / data.capacity).toDouble()
+        bar!!.isVisible = true
 
         bar = honeyBossbar
-        bar!!.name(Component.text("§lМёд: §r" + ChatColor.GOLD + data.honey))
+        bar!!.setTitle("§lМёд: §r" + ChatColor.GOLD + data.honey)
+        bar!!.isVisible = true
     }
 
     fun digFlowers() {
@@ -63,8 +60,9 @@ class BSSPlayer(val player: Player) {
     val honeyBossbar: BossBar?
         get() = data.bossBars[1]
 
-    fun getStat(stats: Stats?): Any? {
-        return data.stats!![stats]
+    fun getStat(statName: Stats?): Any? {
+        val statValue: Any? = data.playerStats?.get(statName)
+        return statValue
     }
 
     fun hasTool(): Boolean {
@@ -72,5 +70,11 @@ class BSSPlayer(val player: Player) {
             return true
         }
         return false
+    }
+
+    fun setTool(tool: Tool) {
+        data.tool = tool
+        player.setItemInHand(tool.itemStack)
+        player.sendMessage("§l§aВы одели палку : ${tool.displayName}")
     }
 }

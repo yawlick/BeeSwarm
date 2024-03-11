@@ -3,7 +3,7 @@ package me.yawlick.beeswarm.field
 import org.bukkit.Bukkit
 import org.bukkit.Location
 
-enum class Fields(val field: Field) {
+enum class FieldEnum(val field: Field) {
     //SUNFLOWER(0,1,-31, 32,1,-18, "Sunflower", 25, 25, 50),
     SUNFLOWER(Field(
             Location(Bukkit.getWorld("world"), 0.0, 1.0, -31.0),

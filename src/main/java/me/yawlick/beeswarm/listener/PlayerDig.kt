@@ -9,7 +9,7 @@ import org.bukkit.event.player.PlayerInteractAtEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
 
 class PlayerDig : Listener {
-    var BSS: BeeSwarm? = BeeSwarm.INSTANCE
+    var BSS: BeeSwarm? = BeeSwarm().INSTANCE
 
     @EventHandler
     fun onPlayerDig(event: PlayerInteractEvent) {
@@ -28,7 +28,7 @@ class PlayerDig : Listener {
         val bukkitPlayer = player.player
         if (!bukkitPlayer!!.hasCooldown(bukkitPlayer.inventory.itemInMainHand.type)) {
             if (player.hasTool()) {
-                bukkitPlayer.setCooldown(bukkitPlayer.inventory.itemInMainHand.type, player.data.tool.cooldown)
+                bukkitPlayer.setCooldown(bukkitPlayer.inventory.itemInMainHand.type, ((20*player.data.tool.cooldown).toInt()))
 
                 player.digFlowers()
             }

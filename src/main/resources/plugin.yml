@@ -1,4 +1,7 @@
 name: BeeSwarm
-version: '${project.version}'
+version: '1.0'
 main: me.yawlick.beeswarm.BeeSwarm
 api-version: '1.16'
+commands:
+  regeneratefields: {}
+  admin: {}

@@ -9,7 +9,7 @@ import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 
 class PlayerConvert : Listener {
-    var BSS: BeeSwarm? = BeeSwarm.INSTANCE
+    var BSS: BeeSwarm? = BeeSwarm().INSTANCE
 
     @EventHandler
     fun onPlayerConvert(event: PlayerInteractEvent) {

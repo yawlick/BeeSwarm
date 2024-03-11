@@ -4,13 +4,16 @@ import me.yawlick.beeswarm.BeeSwarm
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.block.Block
 import java.util.*
 
-class Field internal constructor(// Первый угол поля
-        var first: Location, // Противоположный угол поля
-        var second: Location, // Кол-во цветов на поле в процентном соотношении
-        var flowersPercent: Array<Int>, var name: String) {
-    var BSS: BeeSwarm? = BeeSwarm.INSTANCE
+class Field internal constructor(
+    var first: Location, // Первый угол поля
+    var second: Location, // Противоположный угол поля
+    var flowersPercent: Array<Int>, var name: String // Кол-во цветов на поле в процентном соотношении
+) {
+
+    var BSS: BeeSwarm? = BeeSwarm().INSTANCE
 
     val redFlowers: Int
         get() = flowersPercent[0] // 0

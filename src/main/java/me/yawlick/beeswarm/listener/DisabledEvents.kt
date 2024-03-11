@@ -7,7 +7,7 @@ import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.entity.FoodLevelChangeEvent
 
 class DisabledEvents : Listener {
-    var BSS: BeeSwarm? = BeeSwarm.INSTANCE
+    var BSS: BeeSwarm? = BeeSwarm().INSTANCE
 
     @EventHandler
     fun onBlockBreak(event: BlockBreakEvent) {

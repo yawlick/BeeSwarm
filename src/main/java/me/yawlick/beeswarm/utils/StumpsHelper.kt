@@ -11,7 +11,7 @@ import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 
 class StumpsHelper {
-    var BSS: BeeSwarm? = BeeSwarm.INSTANCE
+    var BSS: BeeSwarm? = BeeSwarm().INSTANCE
     var flowers: ArrayList<Block> = BSS!!.flowers
 
     fun checkFlowers(tool: Tool, plr: Player): Int {
