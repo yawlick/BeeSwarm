@@ -75,7 +75,7 @@ enum class Tool(val realName: String, val displayName: String, val description: 
 
     Vacuum(
         "Vacuum",
-        "§lЦветочный Магнит",
+        "§l§fПылесос",
         "§7§o« Весьма удобное изобретение! »",
         14000,
         2,
@@ -83,7 +83,7 @@ enum class Tool(val realName: String, val displayName: String, val description: 
         0.8,
         2,
         ItemBuilder(Material.WOODEN_SHOVEL)
-            .name("§lЦветочный Магнит")
+            .name("§l§fПылесос")
             .lore("§7§o« Весьма удобное изобретение! »")
             .enchantment(Enchantment.DIG_SPEED, 3)
             .make(),

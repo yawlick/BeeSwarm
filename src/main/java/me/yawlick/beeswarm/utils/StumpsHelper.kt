@@ -2,19 +2,19 @@ package me.yawlick.beeswarm.utils
 
 import me.yawlick.beeswarm.BeeSwarm
 import me.yawlick.beeswarm.player.statistic.Stats
-import me.yawlick.beeswarm.player.tool.Tool
-import me.yawlick.beeswarm.player.BSSPlayer
+import me.yawlick.beeswarm.player.PlayerExtension
 import org.bukkit.*
 import org.bukkit.block.Block
 import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 
-class StumpsHelper {
-    var BSS: BeeSwarm? = BeeSwarm().INSTANCE
-    var flowers: ArrayList<Block> = BSS!!.flowers
+class StumpsHelper : PlayerExtension() {
+    var BSS: BeeSwarm = BeeSwarm.getInstance()
+    var flowers: ArrayList<Block> = BSS.flowers;
 
-    fun checkFlowers(tool: Tool, plr: Player): Int {
+    fun checkFlowers(plr: Player): Int {
+        val tool = plr.getTool()
         val size = tool.stumpSize
         val loc = plr.location
         val minX = loc.blockX - size
@@ -47,21 +47,21 @@ class StumpsHelper {
                             flowers.remove(block)
 
                             if (color == Material.POPPY) {
-                                redPollen += tool.power * (BSSPlayer(plr).getStat(Stats.RED_POLLEN) as Int / 100)
+                                redPollen += tool.power * ((plr.getStat(Stats.RED_POLLEN) as Int + plr.getStat(Stats.POLLEN) as Int) / 100)
                             }
                             if (color == Material.CORNFLOWER) {
-                                bluePollen += tool.power * (BSSPlayer(plr).getStat(Stats.BLUE_POLLEN) as Int / 100)
+                                bluePollen += tool.power * ((plr.getStat(Stats.BLUE_POLLEN) as Int + plr.getStat(Stats.POLLEN) as Int) / 100)
                             }
                             if (color == Material.OXEYE_DAISY) {
-                                whitePollen += tool.power * (BSSPlayer(plr).getStat(Stats.WHITE_POLLEN) as Int / 100)
+                                whitePollen += tool.power * ((plr.getStat(Stats.WHITE_POLLEN) as Int + plr.getStat(Stats.POLLEN) as Int) / 100)
                             }
 
-                            pollen += (redPollen + bluePollen + whitePollen) * (BSSPlayer(plr).getStat(Stats.POLLEN) as Int / 100)
+                            pollen += (redPollen + bluePollen + whitePollen)
                             block.type = Material.AIR
                             plr.playSound(block.location, Sound.BLOCK_WOOD_PLACE, 1f, 1f)
                             plr.world.spawnParticle(Particle.VILLAGER_HAPPY, block.location, 5)
 
-                            Bukkit.getScheduler().runTaskLater(BSS!!, Runnable {
+                            Bukkit.getScheduler().runTaskLater(BSS, Runnable {
                                 val loc2 = block.location
                                 plr.playSound(loc2, Sound.BLOCK_GILDED_BLACKSTONE_BREAK, 1f, 1f)
                                 plr.world.getBlockAt(loc2).type = flower.material
@@ -97,17 +97,17 @@ class StumpsHelper {
                                 flowers.remove(block)
 
                                 when (color) {
-                                    Material.POPPY -> redPollen += tool.power * (BSSPlayer(plr).data.getStats(Stats.RED_POLLEN) as Int / 100)
-                                    Material.CORNFLOWER -> bluePollen += tool.power * (BSSPlayer(plr).data.getStats(Stats.BLUE_POLLEN) as Int / 100)
-                                    Material.OXEYE_DAISY -> whitePollen += tool.power * (BSSPlayer(plr).data.getStats(Stats.WHITE_POLLEN) as Int / 100)
-                                    else -> plr.kickPlayer("пошёл нахуЙ")
+                                    Material.POPPY -> redPollen += tool.power * ((plr.getStat(Stats.RED_POLLEN) as Int + plr.getStat(Stats.POLLEN) as Int) / 100)
+                                    Material.CORNFLOWER -> bluePollen += tool.power * ((plr.getStat(Stats.BLUE_POLLEN) as Int + plr.getStat(Stats.POLLEN) as Int) / 100)
+                                    Material.OXEYE_DAISY -> whitePollen += tool.power * ((plr.getStat(Stats.WHITE_POLLEN) as Int + plr.getStat(Stats.POLLEN) as Int) / 100)
+                                    else -> {}
                                 }
-                                pollen += (redPollen + bluePollen + whitePollen) * (BSSPlayer(plr).data.getStats(Stats.POLLEN) as Int / 100)
+                                pollen += (redPollen + bluePollen + whitePollen)
                                 block.type = Material.AIR
                                 plr.playSound(block.location, Sound.BLOCK_WOOD_PLACE, 1f, 1f)
                                 plr.world.spawnParticle(Particle.VILLAGER_HAPPY, block.location, 5)
 
-                                Bukkit.getScheduler().runTaskLater(BSS!!, Runnable {
+                                Bukkit.getScheduler().runTaskLater(BSS, Runnable {
                                     val loc2 = block.location
                                     plr.playSound(loc2, Sound.BLOCK_GILDED_BLACKSTONE_BREAK, 1f, 1f)
                                     plr.world.getBlockAt(loc2).type = flower.material
@@ -185,14 +185,14 @@ class StumpsHelper {
             }
         }
 
-        Bukkit.getScheduler().runTaskLater(BSS!!, Runnable {
+        Bukkit.getScheduler().runTaskLater(BSS, Runnable {
             for (stand in stands) {
                 stand.remove()
             }
         }, 40L)
 
-        if (pollen > BSSPlayer(plr).data.capacity) {
-            pollen = BSSPlayer(plr).data.capacity
+        if (pollen > plr.getCapacity()) {
+            pollen = plr.getCapacity()
         }
         return pollen
     }

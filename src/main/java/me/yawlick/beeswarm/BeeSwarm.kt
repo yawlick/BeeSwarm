@@ -2,13 +2,13 @@ package me.yawlick.beeswarm
 
 import me.yawlick.beeswarm.command.AdminCommand
 import me.yawlick.beeswarm.command.RegenerateFields
-import me.yawlick.beeswarm.player.tool.Tool
 import me.yawlick.beeswarm.field.FieldEnum
 import me.yawlick.beeswarm.listener.DisabledEvents
 import me.yawlick.beeswarm.listener.PlayerConvert
 import me.yawlick.beeswarm.listener.PlayerDig
 import me.yawlick.beeswarm.listener.PlayerJoin
 import me.yawlick.beeswarm.player.PlayerData
+import me.yawlick.beeswarm.player.tool.Tool
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Location
@@ -17,11 +17,17 @@ import org.bukkit.entity.EntityType
 import org.bukkit.event.Listener
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
-import java.util.ArrayList
-import java.util.UUID
+import java.util.*
 
 class BeeSwarm : JavaPlugin() {
-    var INSTANCE: BeeSwarm = this;
+    companion object {
+        private lateinit var INSTANCE: BeeSwarm
+
+        @JvmStatic
+        fun getInstance(): BeeSwarm {
+            return INSTANCE;
+        }
+    }
     var itemFromTool: HashMap<Tool, ItemStack> = HashMap()
     var toolFromItem: HashMap<ItemStack, Tool> = HashMap()
     var flowers: ArrayList<Block> = ArrayList()
@@ -29,15 +35,9 @@ class BeeSwarm : JavaPlugin() {
     var playerData: HashMap<UUID, PlayerData> = HashMap()
 
     override fun onEnable() {
-        INSTANCE = this;
+        INSTANCE = this
         getCommand("regeneratefields")!!.setExecutor(RegenerateFields())
         getCommand("admin")!!.setExecutor(AdminCommand())
-
-        Bukkit.getScheduler().scheduleSyncDelayedTask(this, Runnable {
-            fun run() {
-                generateFields()
-            }
-        }, 40)
 
         registerListeners(
                 DisabledEvents(),
@@ -50,6 +50,8 @@ class BeeSwarm : JavaPlugin() {
             itemFromTool.put(tool, tool.itemStack)
             toolFromItem.put(tool.itemStack, tool)
         }
+
+        generateFields()
     }
 
     fun registerListeners(vararg listeners: Listener?) {

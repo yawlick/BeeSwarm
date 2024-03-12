@@ -6,16 +6,19 @@ import me.yawlick.beeswarm.player.tool.Tool
 import org.bukkit.boss.BossBar
 
 class PlayerData {
-    var BSS: BeeSwarm = BeeSwarm().INSTANCE
-    var playerStats: HashMap<Stats?, Any?>? = HashMap<Stats?, Any?>();
+    var playerStats: HashMap<Stats?, Any?>? = HashMap<Stats?, Any?>()
     var tool: Tool = Tool.DarkScythe
     var pollen: Int = 0
-    var capacity: Int = 0
+    var capacity: Int = Int.MAX_VALUE
     var honey: Int = 0
     lateinit var bossBars: Array<BossBar?>
 
     fun setStats(stat: Stats, i: Any) {
-        playerStats?.replace(stat, i)
+        if(playerStats!!.containsKey(stat)) {
+            playerStats?.replace(stat, i)
+        } else {
+            playerStats?.put(stat, i)
+        }
     }
 
     fun getStats(stat: Stats): Any? {

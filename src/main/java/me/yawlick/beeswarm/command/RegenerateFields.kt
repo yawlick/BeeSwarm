@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender
 
 class RegenerateFields : CommandExecutor {
     override fun onCommand(commandSender: CommandSender, command: Command, s: String, strings: Array<String>): Boolean {
-        BeeSwarm().INSTANCE.generateFields()
+        BeeSwarm.getInstance().generateFields()
         return true
     }
 }

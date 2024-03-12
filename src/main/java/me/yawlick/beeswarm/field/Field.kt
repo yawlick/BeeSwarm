@@ -4,7 +4,6 @@ import me.yawlick.beeswarm.BeeSwarm
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
-import org.bukkit.block.Block
 import java.util.*
 
 class Field internal constructor(
@@ -12,8 +11,6 @@ class Field internal constructor(
     var second: Location, // Противоположный угол поля
     var flowersPercent: Array<Int>, var name: String // Кол-во цветов на поле в процентном соотношении
 ) {
-
-    var BSS: BeeSwarm? = BeeSwarm().INSTANCE
 
     val redFlowers: Int
         get() = flowersPercent[0] // 0
@@ -50,8 +47,8 @@ class Field internal constructor(
                     val location = Location(Bukkit.getServer().getWorld("world"), X.toDouble(), Y.toDouble(), Z.toDouble())
                     val block = Bukkit.getServer().getWorld("world")!!.getBlockAt(location)
                     block.type = material
-                    BSS!!.flowers.add(block)
-                    BSS!!.flowersLocation[block.location] = block
+                    BeeSwarm.getInstance().flowers.add(block)
+                    BeeSwarm.getInstance().flowersLocation.put(block.location, block)
                 }
             }
         }
